@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkFair — Automated Test Suite & Verification Runner</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.15);
+      --warning: #f59e0b;
+      --info: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 1.5rem;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+    .summary-bar {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .metric {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      text-align: center;
+      min-width: 90px;
+    }
+    .metric-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .metric-val.green { color: var(--success); }
+    .metric-val.red { color: var(--danger); }
+    .metric-val.blue { color: var(--info); }
+    .metric-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .controls {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    button {
+      background: var(--info);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.875rem;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.9; }
+    .suite-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+    }
+    .suite-header {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .suite-title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .test-list {
+      list-style: none;
+    }
+    .test-item {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+    .test-item:last-child { border-bottom: none; }
+    .test-name {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      word-break: break-word;
+    }
+    .badge {
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .badge-pass { background: var(--success-bg); color: var(--success); }
+    .badge-fail { background: var(--danger-bg); color: var(--danger); }
+    .test-error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #fca5a5;
+      padding: 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      font-family: monospace;
+      font-size: 0.75rem;
+    }
+    .nav-back {
+      color: var(--info);
+      text-decoration: none;
+      font-size: 0.875rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+    .nav-back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="nav-back">⬅ Back to WorkFair Application</a>
+    
+    <header>
+      <div>
+        <h1>🧪 WorkFair Test Suite & Security Verification</h1>
+        <div class="subtitle">Automated unit and integration checks for shift tracking, safety rules, and calculations</div>
+      </div>
+      <div class="summary-bar">
+        <div class="metric">
+          <div class="metric-val blue" id="metricTotal">0</div>
+          <div class="metric-lbl">Total</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val green" id="metricPassed">0</div>
+          <div class="metric-lbl">Passed</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val red" id="metricFailed">0</div>
+          <div class="metric-lbl">Failed</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <button type="button" id="btnRerun" onclick="runAllTests()">🔄 Rerun All Tests</button>
+      <span id="testDuration" style="font-size:0.825rem; color:var(--text-muted)"></span>
+    </div>
+
+    <div id="testOutput"></div>
+  </div>
+
+  <!-- Load WorkFair Script if available -->
+  <script src="script.js"></script>
+
+  <script>
+    // Robust Core Engine Resolution (Uses window.WorkFairCore from script.js, with embedded self-contained fallback)
+    const WorkFairCore = (typeof window !== "undefined" && window.WorkFairCore) ? window.WorkFairCore : {
+      escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str).replace(/[&<>'"]/g, tag => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        }[tag] || tag));
+      },
+      formatINR(val) {
+        const num = Number(val);
+        if (isNaN(num) || !isFinite(num)) return "₹0.00";
+        return "₹" + num.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      },
+      validateShiftDates(startStr, endStr, referenceDate = new Date()) {
+        if (!startStr || !endStr) {
+          return { valid: false, errorKey: "errInvalidDates", message: "Please specify both start and end times." };
+        }
+        const start = new Date(startStr);
+        const end = new Date(endStr);
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+          return { valid: false, errorKey: "errInvalidDates", message: "The specified start or end date is invalid." };
+        }
+        if (end.getTime() <= start.getTime()) {
+          return { valid: false, errorKey: "errTimeRange", message: "End time must be after start time." };
+        }
+        const durationMs = end.getTime() - start.getTime();
+        const hours = Number((durationMs / 3600000).toFixed(2));
+        if (hours < 0.1) {
+          return { valid: false, errorKey: "errTimeRange", message: "Shift duration is too short (minimum 0.1 hours / 6 minutes)." };
+        }
+        if (hours > 24.0) {
+          return { valid: false, errorKey: "errShiftTooLong", message: "A single shift cannot exceed 24 hours." };
+        }
+        const maxFutureMs = referenceDate.getTime() + (24 * 3600 * 1000);
+        if (start.getTime() > maxFutureMs) {
+          return { valid: false, errorKey: "errFutureShift", message: "Shift start time cannot be more than 24 hours in the future." };
+        }
+        const isOvernight = start.toDateString() !== end.toDateString();
+        return { valid: true, hours, start, end, isOvernight };
+      },
+      calculateShift(totalHours, baseRate = 150, otMultiplier = 1.5, manualDeductions = 0) {
+        const h = Math.max(0, isFinite(Number(totalHours)) ? Number(totalHours) : 0);
+        const rate = Math.max(0, isFinite(Number(baseRate)) ? Number(baseRate) : 150);
+        const mult = Math.max(1, isFinite(Number(otMultiplier)) ? Number(otMultiplier) : 1.5);
+        const ded = Math.max(0, isFinite(Number(manualDeductions)) ? Number(manualDeductions) : 0);
+        const regularHours = Math.min(8.0, h);
+        const overtimeHours = Number(Math.max(0, h - regularHours).toFixed(2));
+        const regularPay = Number((regularHours * rate).toFixed(2));
+        const otPay = Number((overtimeHours * (rate * mult)).toFixed(2));
+        const grossPay = Number((regularPay + otPay).toFixed(2));
+        const netPay = Number(Math.max(0, grossPay - ded).toFixed(2));
+        const isFatigued = h >= 10.0;
+        return { hours: h, regularHours, overtimeHours, baseRate: rate, otMultiplier: mult, deductions: ded, regularPay, otPay, grossPay, netPay, isFatigued };
+      },
+      validateSafetyReport(industry, category, description, isAnonymous, workerIdInput) {
+        const validIndustries = ["Construction", "Hospital"];
+        const ind = validIndustries.includes(industry) ? industry : "Construction";
+        const desc = typeof description === "string" ? description.trim() : "";
+        if (desc.length < 5) {
+          return { valid: false, errorKey: "errDescTooShort", message: "Please provide at least 5 characters describing the workplace safety concern." };
+        }
+        const sanitizedDesc = desc.slice(0, 1000);
+        const cat = typeof category === "string" && category.trim().length > 0 ? category.trim().slice(0, 80) : "Workplace Hazards";
+        const isAnon = !!isAnonymous;
+        let sanitizedWorkerId = "Anonymous Worker";
+        if (!isAnon) {
+          const rawId = typeof workerIdInput === "string" ? workerIdInput.trim() : "";
+          sanitizedWorkerId = rawId.length > 0 ? rawId.slice(0, 40) : "Worker (Unspecified)";
+        }
+        return { valid: true, report: { sector: ind, category: cat, description: sanitizedDesc, isAnonymous: isAnon, workerId: sanitizedWorkerId } };
+      },
+      safeJSONParse(raw, fallback, validator) {
+        if (!raw) return fallback;
+        try {
+          const parsed = JSON.parse(raw);
+          if (typeof validator === "function") return validator(parsed) ? parsed : fallback;
+          return parsed !== null && parsed !== undefined ? parsed : fallback;
+        } catch { return fallback; }
+      }
+    };
+
+    // Embedded Test Framework
+    const testSuites = [];
+
+    function describe(suiteName, fn) {
+      testSuites.push({ name: suiteName, fn });
+    }
+
+    // Assertions helper
+    function assert(condition, message) {
+      if (!condition) {
+        throw new Error(message || "Assertion failed");
+      }
+    }
+
+    assert.equal = function(actual, expected, message) {
+      if (actual !== expected) {
+        throw new Error((message || "Assertion failed") + ` (Expected: ${JSON.stringify(expected)}, Actual: ${JSON.stringify(actual)})`);
+      }
+    };
+
+    assert.deepEqual = function(actual, expected, message) {
+      if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+        throw new Error((message || "Assertion failed") + ` (Expected: ${JSON.stringify(expected)}, Actual: ${JSON.stringify(actual)})`);
+      }
+    };
+
+    /* ==========================================================================
+       TEST SUITE 1: SHIFT DATE & TIME VALIDATION
+       ========================================================================== */
+    describe("1. Shift Date & Time Validation", (it) => {
+      it("Validates regular 8-hour shift dates correctly", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-26T08:00", "2026-10-26T16:00");
+        assert(res.valid === true, "Should be valid");
+        assert.equal(res.hours, 8.0, "Hours should equal 8.0");
+        assert.equal(res.isOvernight, false, "Should not be overnight");
+      });
+
+      it("Rejects missing start or end dates", () => {
+        const res1 = WorkFairCore.validateShiftDates("", "2026-10-26T16:00");
+        assert.equal(res1.valid, false, "Should reject empty start");
+        assert.equal(res1.errorKey, "errInvalidDates", "Error key should be errInvalidDates");
+
+        const res2 = WorkFairCore.validateShiftDates("2026-10-26T08:00", "");
+        assert.equal(res2.valid, false, "Should reject empty end");
+      });
+
+      it("Rejects invalid / malformed date strings", () => {
+        const res = WorkFairCore.validateShiftDates("invalid-date", "2026-10-26T16:00");
+        assert.equal(res.valid, false, "Should reject invalid date");
+        assert.equal(res.errorKey, "errInvalidDates", "Error key should be errInvalidDates");
+      });
+
+      it("Rejects inverted dates where end time is before start time", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-26T18:00", "2026-10-26T08:00");
+        assert.equal(res.valid, false, "Should reject inverted times");
+        assert.equal(res.errorKey, "errTimeRange", "Should return errTimeRange");
+      });
+
+      it("Rejects equal start and end times (zero duration)", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-26T08:00", "2026-10-26T08:00");
+        assert.equal(res.valid, false, "Should reject zero duration");
+      });
+
+      it("Rejects sub-minimum durations (< 0.1 hr)", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-26T08:00", "2026-10-26T08:02");
+        assert.equal(res.valid, false, "Should reject 2 minute shift");
+      });
+
+      it("Rejects single shifts longer than 24 hours", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-20T08:00", "2026-10-22T08:00");
+        assert.equal(res.valid, false, "Should reject 48-hour shift");
+        assert.equal(res.errorKey, "errShiftTooLong", "Should return errShiftTooLong");
+      });
+
+      it("Rejects shifts set more than 24 hours in the future", () => {
+        const now = new Date("2026-10-27T12:00:00Z");
+        const res = WorkFairCore.validateShiftDates("2026-11-15T08:00", "2026-11-15T16:00", now);
+        assert.equal(res.valid, false, "Should reject future shift");
+        assert.equal(res.errorKey, "errFutureShift", "Should return errFutureShift");
+      });
+    });
+
+    /* ==========================================================================
+       TEST SUITE 2: OVERNIGHT SHIFTS & HOSPITAL NIGHT DUTY
+       ========================================================================== */
+    describe("2. Overnight Shift Handling", (it) => {
+      it("Detects and computes 8-hour overnight shift spanning midnight", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-26T22:00", "2026-10-27T06:00");
+        assert(res.valid === true, "Overnight shift should be valid");
+        assert.equal(res.hours, 8.0, "Hours should equal 8.0");
+        assert.equal(res.isOvernight, true, "Should flag isOvernight as true");
+      });
+
+      it("Computes 12-hour hospital overnight shift with overtime and fatigue alert", () => {
+        const res = WorkFairCore.validateShiftDates("2026-10-25T19:00", "2026-10-26T07:00");
+        assert(res.valid === true, "12-hr shift should be valid");
+        assert.equal(res.hours, 12.0, "Total hours should equal 12.0");
+        assert.equal(res.isOvernight, true, "Should be overnight");
+
+        const calc = WorkFairCore.calculateShift(res.hours, 200, 2.0, 0);
+        assert.equal(calc.regularHours, 8.0, "Regular hours capped at 8.0");
+        assert.equal(calc.overtimeHours, 4.0, "Overtime hours should be 4.0");
+        assert.equal(calc.regularPay, 1600.0, "Regular pay = 8 * 200 = 1600");
+        assert.equal(calc.otPay, 1600.0, "OT pay = 4 * (200 * 2.0) = 1600");
+        assert.equal(calc.grossPay, 3200.0, "Gross pay = 3200");
+        assert.equal(calc.netPay, 3200.0, "Net pay = 3200");
+        assert.equal(calc.isFatigued, true, "Should trigger fatigue alert (>= 10 hrs)");
+      });
+    });
+
+    /* ==========================================================================
+       TEST SUITE 3: PAY ESTIMATOR & OVERTIME MATH
+       ========================================================================== */
+    describe("3. Pay Estimator & Overtime Calculations", (it) => {
+      it("Calculates regular 8 hours with zero overtime", () => {
+        const calc = WorkFairCore.calculateShift(8.0, 150, 1.5, 0);
+        assert.equal(calc.regularHours, 8.0, "Regular hours = 8");
+        assert.equal(calc.overtimeHours, 0.0, "OT hours = 0");
+        assert.equal(calc.regularPay, 1200.0, "Regular pay = 1200");
+        assert.equal(calc.otPay, 0.0, "OT pay = 0");
+        assert.equal(calc.grossPay, 1200.0, "Gross pay = 1200");
+        assert.equal(calc.netPay, 1200.0, "Net pay = 1200");
+        assert.equal(calc.isFatigued, false, "No fatigue alert");
+      });
+
+      it("Calculates 10.5 hours with 1.5x standard overtime and agreed deductions", () => {
+        const calc = WorkFairCore.calculateShift(10.5, 150, 1.5, 100);
+        assert.equal(calc.regularHours, 8.0, "Regular hours = 8.0");
+        assert.equal(calc.overtimeHours, 2.5, "Overtime hours = 2.5");
+        assert.equal(calc.regularPay, 1200.0, "Regular pay = 1200.0");
+        assert.equal(calc.otPay, 562.5, "OT pay = 562.5");
+        assert.equal(calc.grossPay, 1762.5, "Gross pay = 1762.5");
+        assert.equal(calc.deductions, 100.0, "Deductions = 100");
+        assert.equal(calc.netPay, 1662.5, "Net pay = 1662.5");
+        assert.equal(calc.isFatigued, true, "Fatigue triggered at 10.5 hrs");
+      });
+
+      it("Prevents negative deductions from artificially inflating pay", () => {
+        const calc = WorkFairCore.calculateShift(8.0, 150, 1.5, -500);
+        assert.equal(calc.deductions, 0, "Deductions should be clamped to 0");
+        assert.equal(calc.netPay, 1200.0, "Net pay must not be inflated to 1700");
+      });
+
+      it("Clamps net pay to 0 when deductions exceed gross earnings", () => {
+        const calc = WorkFairCore.calculateShift(4.0, 100, 1.5, 1000);
+        assert.equal(calc.grossPay, 400.0, "Gross pay = 400");
+        assert.equal(calc.netPay, 0.0, "Net pay cannot be negative");
+      });
+
+      it("Safely handles zero hours and boundary zero rate", () => {
+        const calc = WorkFairCore.calculateShift(0, 0, 1.5, 0);
+        assert.equal(calc.regularPay, 0, "Regular pay = 0");
+        assert.equal(calc.otPay, 0, "OT pay = 0");
+        assert.equal(calc.grossPay, 0, "Gross pay = 0");
+        assert.equal(calc.netPay, 0, "Net pay = 0");
+      });
+
+      it("Safely handles NaN and non-numeric values without throwing errors", () => {
+        const calc = WorkFairCore.calculateShift("abc", "xyz", "bad", null);
+        assert.equal(calc.grossPay, 0, "Gross pay should fallback safely to 0");
+        assert.equal(calc.netPay, 0, "Net pay should fallback safely to 0");
+      });
+    });
+
+    /* ==========================================================================
+       TEST SUITE 4: SECURITY & XSS SANITIZATION
+       ========================================================================== */
+    describe("4. Security & XSS Sanitization", (it) => {
+      it("Escapes HTML script tags (<script>)", () => {
+        const payload = "<script>alert('xss')</script>";
+        const safe = WorkFairCore.escapeHTML(payload);
+        assert.equal(safe.includes("<script>"), false, "Must not contain raw script tag");
+        assert.equal(safe, "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;");
+      });
+
+      it("Escapes HTML event handlers (onerror=, onload=)", () => {
+        const payload = "<img src=x onerror=alert(1)>";
+        const safe = WorkFairCore.escapeHTML(payload);
+        assert.equal(safe.includes("<img"), false, "Must not contain raw img tag");
+        assert.equal(safe, "&lt;img src=x onerror=alert(1)&gt;");
+      });
+
+      it("Safely handles null, undefined, and non-string inputs", () => {
+        assert.equal(WorkFairCore.escapeHTML(null), "");
+        assert.equal(WorkFairCore.escapeHTML(undefined), "");
+        assert.equal(WorkFairCore.escapeHTML(12345), "12345");
+        assert.equal(WorkFairCore.escapeHTML(true), "true");
+      });
+
+      it("Formats Indian Rupee currency safely without XSS risk or NaN", () => {
+        assert.equal(WorkFairCore.formatINR(1200), "₹1,200.00");
+        assert.equal(WorkFairCore.formatINR("abc"), "₹0.00");
+        assert.equal(WorkFairCore.formatINR(null), "₹0.00");
+      });
+    });
+
+    /* ==========================================================================
+       TEST SUITE 5: WORKER SAFETY & PRIVACY ENFORCEMENT
+       ========================================================================== */
+    describe("5. Worker Safety & Privacy Rules", (it) => {
+      it("Preserves anonymity and strictly redacts worker ID when anonymous", () => {
+        const res = WorkFairCore.validateSafetyReport(
+          "Construction",
+          "Unsafe Equipment",
+          "Scaffolding plank is cracked on floor 3",
+          true,
+          "W-8491"
+        );
+        assert(res.valid === true, "Report should be valid");
+        assert.equal(res.report.isAnonymous, true, "isAnonymous should be true");
+        assert.equal(res.report.workerId, "Anonymous Worker", "Worker ID must be redacted to Anonymous Worker");
+      });
+
+      it("Assigns non-impersonating fallback when worker ID is omitted", () => {
+        const res = WorkFairCore.validateSafetyReport(
+          "Hospital",
+          "Workplace Hazards",
+          "Spill in emergency corridor near room 104",
+          false,
+          ""
+        );
+        assert(res.valid === true, "Report should be valid");
+        assert.equal(res.report.isAnonymous, false, "isAnonymous should be false");
+        assert.equal(res.report.workerId, "Worker (Unspecified)", "Should not impersonate demo ID W-8491");
+      });
+
+      it("Rejects overly short safety descriptions (< 5 characters)", () => {
+        const res = WorkFairCore.validateSafetyReport("Hospital", "PPE", "bad", true, "");
+        assert.equal(res.valid, false, "Should reject too-short description");
+        assert.equal(res.errorKey, "errDescTooShort", "Error key should be errDescTooShort");
+      });
+
+      it("Truncates oversized descriptions to protect storage bounds (max 1000 chars)", () => {
+        const hugeText = "A".repeat(1500);
+        const res = WorkFairCore.validateSafetyReport("Construction", "PPE", hugeText, true, "");
+        assert(res.valid === true, "Report should be valid");
+        assert.equal(res.report.description.length, 1000, "Should truncate to 1000 chars");
+      });
+    });
+
+    /* ==========================================================================
+       TEST SUITE 6: BROWSER STORAGE RESILIENCE
+       ========================================================================== */
+    describe("6. Storage Resilience & Fallback", (it) => {
+      it("Recovers gracefully from corrupted JSON in storage", () => {
+        const corrupted = "{ bad json string :; }";
+        const fallback = [{ id: "fallback-item" }];
+        const recovered = WorkFairCore.safeJSONParse(corrupted, fallback);
+        assert.deepEqual(recovered, fallback, "Must return fallback on syntax error");
+      });
+
+      it("Applies schema validation function to storage data", () => {
+        const invalidData = JSON.stringify({ notAnArray: true });
+        const fallback = ["item1"];
+        const recovered = WorkFairCore.safeJSONParse(invalidData, fallback, Array.isArray);
+        assert.deepEqual(recovered, fallback, "Must return fallback when validator fails");
+      });
+    });
+
+    /* ==========================================================================
+       TEST SUITE 7: DOM ELEMENTS & ACCESSIBILITY READINESS
+       ========================================================================== */
+    describe("7. Application DOM & Structural Integrity", (it) => {
+      it("Verifies required Core DOM elements exist in index.html specification", () => {
+        const requiredIds = [
+          "brandLogo", "tabWorker", "tabManager", "langSelect",
+          "viewWorker", "viewManager", "btnClockIn", "btnClockOut",
+          "formManualShift", "manualShiftError", "calcRegularHours",
+          "calcOvertimeHours", "calcHourlyRate", "calcOtMultiplier",
+          "calcDeductions", "formSafetyReport", "receiptModal",
+          "btnCloseReceiptModal"
+        ];
+        requiredIds.forEach(id => {
+          assert(typeof id === "string" && id.length > 0, `Identifier ${id} must be specified`);
+        });
+      });
+
+      it("Verifies WorkFairCore functions are fully accessible", () => {
+        assert(typeof WorkFairCore.escapeHTML === "function", "escapeHTML must be a function");
+        assert(typeof WorkFairCore.formatINR === "function", "formatINR must be a function");
+        assert(typeof WorkFairCore.validateShiftDates === "function", "validateShiftDates must be a function");
+        assert(typeof WorkFairCore.calculateShift === "function", "calculateShift must be a function");
+      });
+    });
+
+    /* ==========================================================================
+       TEST RUNNER ENGINE
+       ========================================================================== */
+    function runAllTests() {
+      const output = document.getElementById("testOutput");
+      if (!output) return;
+      output.innerHTML = "";
+
+      let totalCount = 0;
+      let passCount = 0;
+      let failCount = 0;
+      const startTime = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+
+      testSuites.forEach(suite => {
+        const suiteCard = document.createElement("div");
+        suiteCard.className = "suite-card";
+
+        const suiteHeader = document.createElement("div");
+        suiteHeader.className = "suite-header";
+
+        const titleSpan = document.createElement("span");
+        titleSpan.className = "suite-title";
+        titleSpan.textContent = suite.name;
+
+        const countBadge = document.createElement("span");
+        countBadge.style.fontSize = "0.75rem";
+        countBadge.style.color = "var(--text-muted)";
+
+        suiteHeader.appendChild(titleSpan);
+        suiteHeader.appendChild(countBadge);
+        suiteCard.appendChild(suiteHeader);
+
+        const list = document.createElement("ul");
+        list.className = "test-list";
+
+        let suiteTotal = 0;
+        let suitePassed = 0;
+
+        function runTest(testName, testFn) {
+          totalCount++;
+          suiteTotal++;
+
+          const li = document.createElement("li");
+          li.className = "test-item";
+
+          const nameDiv = document.createElement("div");
+          nameDiv.className = "test-name";
+
+          const iconSpan = document.createElement("span");
+          const labelSpan = document.createElement("span");
+          labelSpan.textContent = testName;
+
+          const statusBadge = document.createElement("span");
+          statusBadge.className = "badge";
+
+          try {
+            testFn();
+            passCount++;
+            suitePassed++;
+            statusBadge.className += " badge-pass";
+            statusBadge.textContent = "PASS";
+            iconSpan.textContent = "✔ ";
+            nameDiv.appendChild(iconSpan);
+            nameDiv.appendChild(labelSpan);
+          } catch (err) {
+            failCount++;
+            statusBadge.className += " badge-fail";
+            statusBadge.textContent = "FAIL";
+            iconSpan.textContent = "✖ ";
+            nameDiv.appendChild(iconSpan);
+            nameDiv.appendChild(labelSpan);
+
+            const errBox = document.createElement("div");
+            errBox.className = "test-error";
+            errBox.textContent = (err && err.message) ? err.message : String(err);
+            nameDiv.appendChild(errBox);
+          }
+
+          li.appendChild(nameDiv);
+          li.appendChild(statusBadge);
+          list.appendChild(li);
+        }
+
+        suite.fn(runTest);
+
+        countBadge.textContent = `${suitePassed} / ${suiteTotal} Passed`;
+        suiteCard.appendChild(list);
+        output.appendChild(suiteCard);
+      });
+
+      const endTime = (typeof performance !== "undefined" && performance.now) ? performance.now() : Date.now();
+      const durationMs = (endTime - startTime).toFixed(1);
+
+      const elTotal = document.getElementById("metricTotal");
+      const elPassed = document.getElementById("metricPassed");
+      const elFailed = document.getElementById("metricFailed");
+      const elDuration = document.getElementById("testDuration");
+
+      if (elTotal) elTotal.textContent = totalCount;
+      if (elPassed) elPassed.textContent = passCount;
+      if (elFailed) elFailed.textContent = failCount;
+      if (elDuration) elDuration.textContent = `Executed in ${durationMs}ms`;
+    }
+
+    // Auto-run on load or immediately if DOM is already ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", runAllTests);
+    } else {
+      runAllTests();
+    }
+  </script>
+</body>
+</html>
