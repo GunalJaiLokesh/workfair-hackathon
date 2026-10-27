@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WorkFair — Fair Work, Safer Workers. A transparent shift tracking, pay estimation, and safety reporting platform for construction and hospital support workers. Aligned with UN SDG 8.">
+  <title>WorkFair — Fair Work, Safer Workers | UN SDG 8</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Top Accessibility Announcement / Demo Banner -->
+  <aside class="demo-banner" role="complementary" aria-label="Demo environment notice">
+    <div class="container banner-inner">
+      <span class="badge badge-accent" data-i18n="demoBadge">PROTOTYPE DEMO</span>
+      <span class="banner-text" data-i18n="demoBannerText">
+        Demonstration Mode: Local browser storage only. No login or cloud backend required.
+      </span>
+      <span class="sdg-pill" title="UN Sustainable Development Goal 8">
+        <span class="sdg-icon" aria-hidden="true">🌐</span> UN SDG 8: Decent Work
+      </span>
+    </div>
+  </aside>
+
+  <!-- Navigation Bar -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <a href="#landing" class="brand-link" id="brandLogo">
+          <div class="brand-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div>
+            <span class="brand-name">WorkFair</span>
+            <span class="brand-tagline" data-i18n="brandTagline">Fair Work, Safer Workers</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-controls" aria-label="Primary navigation">
+        <!-- View Switcher -->
+        <div class="view-switch-group" role="tablist" aria-label="Application View Switcher">
+          <button type="button" class="nav-tab active" id="tabWorker" role="tab" aria-selected="true" aria-controls="viewWorker">
+            <span class="tab-icon" aria-hidden="true">👷</span>
+            <span data-i18n="navWorker">Worker View</span>
+          </button>
+          <button type="button" class="nav-tab" id="tabManager" role="tab" aria-selected="false" aria-controls="viewManager">
+            <span class="tab-icon" aria-hidden="true">📋</span>
+            <span data-i18n="navManager">Manager View</span>
+          </button>
+        </div>
+
+        <!-- Language Selector -->
+        <div class="lang-switcher">
+          <label for="langSelect" class="sr-only" data-i18n="chooseLanguage">Choose Language</label>
+          <span class="lang-icon" aria-hidden="true">🗣️</span>
+          <select id="langSelect" class="lang-select" aria-label="Language selection">
+            <option value="en">English (EN)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+          </select>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main id="mainContent">
+
+    <!-- HERO / LANDING SECTION -->
+    <section id="viewLanding" class="landing-section">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="pulse-dot"></span>
+              <span data-i18n="heroBadge">UN SDG 8 Hackathon Prototype</span>
+            </div>
+            <h1 class="hero-title" data-i18n="heroTitle">
+              Fair Work, Transparent Pay & Safer Workplaces
+            </h1>
+            <p class="hero-subtitle" data-i18n="heroSubtitle">
+              Empowering construction builders and hospital support staff with verifiable shift records, transparent wage estimates, early fatigue alerts, and anonymous hazard reporting.
+            </p>
+
+            <div class="hero-cta-group">
+              <button type="button" class="btn btn-primary btn-lg" id="btnGetStartedWorker">
+                <span aria-hidden="true">👷</span>
+                <span data-i18n="ctaOpenWorker">Open Worker Dashboard</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" id="btnGetStartedManager">
+                <span aria-hidden="true">📊</span>
+                <span data-i18n="ctaOpenManager">Open Manager Dashboard</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-stats-panel">
+            <h2 class="sr-only">Key Focus Areas</h2>
+            <div class="stat-card">
+              <div class="stat-number">SDG 8.8</div>
+              <div class="stat-label" data-i18n="sdgTarget">Safe and Secure Working Environments</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">100%</div>
+              <div class="stat-label" data-i18n="statTransparent">Transparent Pay Math for Workers</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">2 Sectors</div>
+              <div class="stat-label" data-i18n="statSectors">Construction & Hospital Support</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Problem & Solution Cards -->
+        <div class="feature-overview-grid">
+          <div class="info-card">
+            <div class="info-icon" aria-hidden="true">⚠️</div>
+            <h3 class="info-title" data-i18n="problemTitle">The Problem</h3>
+            <p class="info-text" data-i18n="problemText">
+              Informal paper logs, undocumented overtime, unpredictable deductions, and fear of reporting workplace hazards put front-line staff at acute financial and health risk.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon" aria-hidden="true">🛡️</div>
+            <h3 class="info-title" data-i18n="solutionTitle">The WorkFair Solution</h3>
+            <p class="info-text" data-i18n="solutionText">
+              One-touch digital attendance with optional GPS check-in, transparent breakdown of overtime and regular wages, continuous shift fatigue awareness, and instant Proof of Every Shift.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon" aria-hidden="true">🧾</div>
+            <h3 class="info-title" data-i18n="featureProofTitle">Proof of Every Shift</h3>
+            <p class="info-text" data-i18n="featureProofText">
+              Workers generate a standardized shift receipt complete with hour tallies, exact wage formulas, fatigue status, and hazard links that can be printed or saved on their mobile phones.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKER DASHBOARD VIEW -->
+    <section id="viewWorker" class="view-panel active">
+      <div class="container">
+        <!-- Worker Header & Sector Selector -->
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title" data-i18n="workerPortalTitle">Worker Dashboard</h2>
+            <p class="panel-desc" data-i18n="workerPortalDesc">
+              Track your working hours, inspect your earnings, monitor fatigue, and voice workplace safety concerns.
+            </p>
+          </div>
+
+          <!-- Sector Selector Toggle -->
+          <div class="sector-selector-wrapper">
+            <span class="selector-label" data-i18n="activeSectorLabel">Active Industry:</span>
+            <div class="sector-toggle-group" role="radiogroup" aria-label="Industry Sector Selection">
+              <label class="sector-toggle-option">
+                <input type="radio" name="workerSector" value="Construction" checked id="radioSectorConstruction">
+                <span class="sector-pill">
+                  <span aria-hidden="true">🏗️</span>
+                  <span data-i18n="sectorConstruction">Construction</span>
+                </span>
+              </label>
+              <label class="sector-toggle-option">
+                <input type="radio" name="workerSector" value="Hospital" id="radioSectorHospital">
+                <span class="sector-pill">
+                  <span aria-hidden="true">🏥</span>
+                  <span data-i18n="sectorHospital">Hospital Support</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worker Quick Stat Bar -->
+        <div class="worker-overview-grid" aria-label="Worker shift overview">
+          <div class="metric-card">
+            <div class="metric-icon" aria-hidden="true">⏱️</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiCurrentShift">Current Status</div>
+              <div class="metric-value" id="kpiWorkerShiftStatus">Clocked Out</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" aria-hidden="true">📅</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiShiftDuration">Logged Today</div>
+              <div class="metric-value" id="kpiWorkerLoggedHours">0.0 hrs</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" aria-hidden="true">💰</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiEstimatedEarnings">Estimated Today</div>
+              <div class="metric-value" id="kpiWorkerEstPay">₹0.00</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon" aria-hidden="true">🚨</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiFatigueStatus">Fatigue Level</div>
+              <div class="metric-value status-good" id="kpiWorkerFatigueLevel">Safe Shift</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Worker Action Grid -->
+        <div class="dashboard-grid">
+
+          <!-- SECTION A & B: ATTENDANCE & SHIFT TRACKING -->
+          <div class="card card-primary-action">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon" aria-hidden="true">🕒</span>
+                <h3 class="card-title" id="attendanceCardTitle" data-i18n="attendanceTitle">Shift Attendance & Time Clock</h3>
+              </div>
+              <span class="badge badge-info" id="attendanceSectorBadge">Construction</span>
+            </div>
+            <div class="card-body">
+              <p class="section-lead" id="attendanceSectorDesc" data-i18n="attendanceDesc">
+                Record your shift start and finish times. Geolocation is strictly optional and only captured when you explicitly request it.
+              </p>
+
+              <!-- Clock Display -->
+              <div class="clock-display-panel" id="clockDisplayPanel">
+                <div class="live-clock-time" id="liveClockTime" aria-live="polite">00:00:00</div>
+                <div class="live-clock-date" id="liveClockDate">October 27, 2026</div>
+                <div class="clock-status-tag status-offline" id="clockStatusTag">
+                  <span class="status-indicator"></span>
+                  <span id="clockStatusText" data-i18n="statusClockedOut">Not on shift</span>
+                </div>
+              </div>
+
+              <!-- Live Elapsed Shift Timer (When Active) -->
+              <div class="active-shift-timer hidden" id="activeShiftTimerBox">
+                <div class="timer-headline">
+                  <span data-i18n="activeShiftElapsed">Shift Duration:</span>
+                  <strong class="timer-digits" id="activeShiftElapsedDigits">00:00:00</strong>
+                </div>
+                <div class="timer-start-meta" id="activeShiftStartTimeMeta">Started at: --:--</div>
+              </div>
+
+              <!-- Geolocation Permission & Capture Notice (Strictly Optional) -->
+              <div class="geo-control-box">
+                <div class="geo-status-row">
+                  <div class="geo-status-text">
+                    <span class="geo-icon" aria-hidden="true">📍</span>
+                    <span id="geoStatusText" data-i18n="geoNotCaptured">Location: Optional (Not captured)</span>
+                  </div>
+                  <button type="button" class="btn btn-outline btn-sm" id="btnRequestLocation">
+                    <span aria-hidden="true">🎯</span>
+                    <span data-i18n="btnAddLocation">Add Worksite GPS</span>
+                  </button>
+                </div>
+                <div class="form-help" data-i18n="geoPrivacyNotice">
+                  Privacy Guard: Browser location is queried only once upon your request and never continuously tracked. You can check in without location.
+                </div>
+              </div>
+
+              <!-- Attendance Action Buttons -->
+              <div class="action-btn-row">
+                <button type="button" class="btn btn-success btn-lg flex-1" id="btnClockIn">
+                  <span aria-hidden="true">▶️</span>
+                  <span data-i18n="btnCheckIn">Check In (Start Shift)</span>
+                </button>
+                <button type="button" class="btn btn-danger btn-lg flex-1" id="btnClockOut" disabled>
+                  <span aria-hidden="true">⏹️</span>
+                  <span data-i18n="btnCheckOut">Check Out (End Shift)</span>
+                </button>
+              </div>
+
+              <!-- Manual / Simulated Shift Logger (For Quick Demo & Testing) -->
+              <details class="demo-expander" id="manualShiftDetails">
+                <summary data-i18n="demoShiftSummary">Log a Past or Completed Shift (Demo Testing)</summary>
+                <form id="formManualShift" class="manual-shift-form">
+                  <div class="form-row">
+                    <div class="form-group flex-1">
+                      <label for="manualStartTime" data-i18n="lblStartTime">Start Time</label>
+                      <input type="datetime-local" id="manualStartTime" required class="form-input">
+                    </div>
+                    <div class="form-group flex-1">
+                      <label for="manualEndTime" data-i18n="lblEndTime">End Time</label>
+                      <input type="datetime-local" id="manualEndTime" required class="form-input">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="manualWorkerNotes" data-i18n="lblShiftNotes">Shift Notes (Optional)</label>
+                    <input type="text" id="manualWorkerNotes" placeholder="e.g. Scaffolding Phase 2, ICU Floor Support" class="form-input">
+                  </div>
+                  <button type="submit" class="btn btn-secondary btn-sm" id="btnSaveManualShift">
+                    <span data-i18n="btnRecordShift">Record Completed Shift</span>
+                  </button>
+                </form>
+              </details>
+
+              <!-- Fatigue Advisory Banner (Hospital / Extended Shift Warning) -->
+              <div class="fatigue-banner hidden" id="workerFatigueBanner" role="alert">
+                <div class="fatigue-icon" aria-hidden="true">⚠️</div>
+                <div class="fatigue-content">
+                  <h4 class="fatigue-title" id="fatigueTitleText" data-i18n="fatigueWarningTitle">Fatigue Alert: Long Shift Detected</h4>
+                  <p class="fatigue-message" id="fatigueMessageText" data-i18n="fatigueWarningBody">
+                    This shift exceeds the demonstration fatigue threshold (10 hours). Prolonged shifts without adequate rest intervals increase risk of workplace injury and cognitive exhaustion.
+                  </p>
+                  <p class="disclaimer-small" data-i18n="fatigueDisclaimer">
+                    Note: This warning is an automated shift awareness guideline, not a medical diagnosis or hospital employment policy.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SECTION C: TRANSPARENT PAY ESTIMATOR -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon" aria-hidden="true">🧮</span>
+                <h3 class="card-title" data-i18n="payEstimatorTitle">Transparent Pay Estimator</h3>
+              </div>
+              <span class="badge badge-accent" data-i18n="demoRatesBadge">Demo Rates</span>
+            </div>
+            <div class="card-body">
+              <p class="section-lead" data-i18n="payEstimatorDesc">
+                Every calculation is shown clearly so you know exactly how your estimated shift earnings are derived.
+              </p>
+
+              <form id="payEstimatorForm" class="calculator-form">
+                <div class="form-row">
+                  <div class="form-group flex-1">
+                    <label for="calcRegularHours" data-i18n="lblRegularHours">Regular Hours</label>
+                    <input type="number" id="calcRegularHours" min="0" max="24" step="0.25" value="8" class="form-input">
+                  </div>
+                  <div class="form-group flex-1">
+                    <label for="calcOvertimeHours" data-i18n="lblOvertimeHours">Overtime Hours</label>
+                    <input type="number" id="calcOvertimeHours" min="0" max="24" step="0.25" value="2.5" class="form-input">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group flex-1">
+                    <label for="calcHourlyRate" data-i18n="lblHourlyRate">Base Hourly Rate (₹ / hr)</label>
+                    <input type="number" id="calcHourlyRate" min="1" step="1" value="150" class="form-input">
+                  </div>
+                  <div class="form-group flex-1">
+                    <label for="calcOtMultiplier" data-i18n="lblOtMultiplier">Overtime Multiplier</label>
+                    <select id="calcOtMultiplier" class="form-select">
+                      <option value="1.5">1.5× (Standard Overtime)</option>
+                      <option value="2.0">2.0× (Double Time / Night / Weekend)</option>
+                      <option value="1.25">1.25× (Partial Overtime)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="calcDeductions" data-i18n="lblDeductions">Manual Deductions (₹)</label>
+                  <input type="number" id="calcDeductions" min="0" step="1" value="0" placeholder="e.g. Uniform deposit, meal allowance deduction" class="form-input">
+                  <div class="form-help" data-i18n="deductionsHelp">Enter any agreed deductions (advance pay, meals, safety equipment deposit).</div>
+                </div>
+
+                <!-- Live Mathematical Breakdown Table -->
+                <div class="calc-breakdown-card" aria-live="polite">
+                  <div class="breakdown-row">
+                    <span class="breakdown-label" data-i18n="calcRegularLine">Regular Pay (<span id="calcRegularHoursDisplay">8</span> hrs × ₹<span id="calcRegularRateDisplay">150</span>)</span>
+                    <strong class="breakdown-value" id="calcRegularAmount">₹1,200.00</strong>
+                  </div>
+                  <div class="breakdown-row">
+                    <span class="breakdown-label" data-i18n="calcOvertimeLine">Overtime Pay (<span id="calcOtHoursDisplay">2.5</span> hrs × ₹<span id="calcOtRateDisplay">225</span>)</span>
+                    <strong class="breakdown-value text-accent" id="calcOvertimeAmount">₹562.50</strong>
+                  </div>
+                  <div class="breakdown-row subtotal-row">
+                    <span class="breakdown-label" data-i18n="calcGrossPay">Gross Estimated Pay</span>
+                    <strong class="breakdown-value" id="calcGrossAmount">₹1,762.50</strong>
+                  </div>
+                  <div class="breakdown-row deduction-row">
+                    <span class="breakdown-label" data-i18n="calcDeductionLine">Total Deductions</span>
+                    <strong class="breakdown-value text-danger" id="calcDeductionsAmount">- ₹0.00</strong>
+                  </div>
+                  <hr class="breakdown-divider">
+                  <div class="breakdown-row total-row">
+                    <span class="breakdown-label-lg" data-i18n="calcNetEstimate">Final Estimated Earnings</span>
+                    <span class="breakdown-value-lg" id="calcNetAmount">₹1,762.50</span>
+                  </div>
+                </div>
+
+                <p class="disclaimer-small" data-i18n="payDisclaimer">
+                  * Explicit Demo Disclaimer: This estimate is produced for demonstration and transparency purposes. It is not an official legal payslip. Actual payments are subject to official employer contracts and statutory withholdings.
+                </p>
+              </form>
+            </div>
+          </div>
+
+          <!-- SECTION D: WORKPLACE SAFETY & HAZARD REPORTING -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon" aria-hidden="true">🛡️</span>
+                <h3 class="card-title" data-i18n="safetyTitle">Voice a Safety Concern</h3>
+              </div>
+              <span class="badge badge-success" data-i18n="badgeAnonymousOpt">Anonymous Option</span>
+            </div>
+            <div class="card-body">
+              <p class="section-lead" data-i18n="safetyDesc">
+                Speak up about unsafe equipment, PPE deficiencies, structural hazards, or severe workloads without fear of reprisal.
+              </p>
+
+              <form id="formSafetyReport" class="safety-form">
+                <div class="form-row">
+                  <div class="form-group flex-1">
+                    <label for="safetyIndustry" data-i18n="lblSafetyIndustry">Industry</label>
+                    <select id="safetyIndustry" class="form-select" required>
+                      <option value="Construction">Construction</option>
+                      <option value="Hospital">Hospital Management</option>
+                    </select>
+                  </div>
+                  <div class="form-group flex-1">
+                    <label for="safetyCategory" data-i18n="lblSafetyCategory">Concern Category</label>
+                    <select id="safetyCategory" class="form-select" required>
+                      <option value="Unsafe Equipment">Unsafe Equipment / Machinery</option>
+                      <option value="Protective Equipment (PPE)">Missing / Damaged PPE</option>
+                      <option value="Workplace Hazards">Physical / Environmental Hazards</option>
+                      <option value="Excessive Workload">Excessive Hours / Chronic Fatigue</option>
+                      <option value="Other Safety Issue">Other Workplace Concern</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="safetyDescription" data-i18n="lblSafetyDesc">Detailed Description</label>
+                  <textarea id="safetyDescription" rows="3" required placeholder="Describe what happened or what hazard you observed, location, and any urgent risk..." class="form-textarea"></textarea>
+                </div>
+
+                <!-- Anonymous Toggle -->
+                <div class="checkbox-container">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="safetyIsAnonymous" checked>
+                    <span class="checkbox-custom"></span>
+                    <span class="checkbox-text">
+                      <strong data-i18n="lblReportAnonymous">Submit as Anonymous Report</strong>
+                      <span class="form-help" data-i18n="anonymousHelp">
+                        Your worker ID and name will be omitted from the manager report. Please note that anonymity cannot be preserved if you mention your name inside the text description.
+                      </span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="form-group" id="workerIdGroup" style="display: none;">
+                  <label for="safetyWorkerId" data-i18n="lblOptionalWorkerId">Your Worker ID (Optional)</label>
+                  <input type="text" id="safetyWorkerId" placeholder="e.g. WF-CON-042" class="form-input">
+                </div>
+
+                <button type="submit" class="btn btn-warning btn-block" id="btnSubmitSafetyReport">
+                  <span aria-hidden="true">📨</span>
+                  <span data-i18n="btnSubmitReport">Submit Safety Report</span>
+                </button>
+              </form>
+
+              <!-- Safety Submission Confirmation Notification -->
+              <div class="confirmation-box hidden" id="safetyConfirmationBox" role="status">
+                <div class="confirmation-header">
+                  <span class="conf-icon">✅</span>
+                  <h4 data-i18n="safetySuccessTitle">Safety Report Filed Successfully</h4>
+                </div>
+                <p data-i18n="safetySuccessBody">
+                  Your concern has been registered and is now visible on the safety log.
+                </p>
+                <div class="conf-ref">
+                  <span data-i18n="lblRefNumber">Reference No:</span>
+                  <strong id="safetySuccessRef" class="ref-badge">WF-SAF-XXXX</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECTION E: SHIFT HISTORY & PROOF OF EVERY SHIFT -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon" aria-hidden="true">📜</span>
+                <h3 class="card-title" data-i18n="recentShiftsTitle">My Shift History & Receipts</h3>
+              </div>
+              <button type="button" class="btn btn-outline btn-sm" id="btnGenerateLastReceipt">
+                <span aria-hidden="true">🧾</span>
+                <span data-i18n="btnLatestReceipt">View Latest Receipt</span>
+              </button>
+            </div>
+            <div class="card-body">
+              <p class="section-lead" data-i18n="recentShiftsDesc">
+                Every shift completed creates an immutable "Proof of Every Shift" receipt with full hour and pay transparency.
+              </p>
+
+              <div class="table-responsive">
+                <table class="data-table" id="workerShiftsTable">
+                  <thead>
+                    <tr>
+                      <th data-i18n="colDate">Date / Shift</th>
+                      <th data-i18n="colSector">Sector</th>
+                      <th data-i18n="colHours">Hours</th>
+                      <th data-i18n="colFatigue">Fatigue Status</th>
+                      <th data-i18n="colEstimated">Est. Pay</th>
+                      <th data-i18n="colReceipt">Receipt</th>
+                    </tr>
+                  </thead>
+                  <tbody id="workerShiftsTableBody">
+                    <!-- Populated dynamically by script.js -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Worker Safety Reports Status Table -->
+              <div class="worker-safety-subpanel">
+                <h4 class="subpanel-title" data-i18n="mySafetyReportsTitle">My Filed Safety Concerns</h4>
+                <div class="table-responsive">
+                  <table class="data-table" id="workerSafetyTable">
+                    <thead>
+                      <tr>
+                        <th data-i18n="colRefId">Ref #</th>
+                        <th data-i18n="colCategory">Category</th>
+                        <th data-i18n="colSubmitted">Submitted</th>
+                        <th data-i18n="colStatus">Current Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="workerSafetyTableBody">
+                      <!-- Populated dynamically by script.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div><!-- /dashboard-grid -->
+      </div>
+    </section>
+
+    <!-- MANAGER DASHBOARD VIEW -->
+    <section id="viewManager" class="view-panel">
+      <div class="container">
+        <!-- Manager Header -->
+        <div class="panel-header">
+          <div>
+            <div class="flex-align-center gap-2">
+              <h2 class="panel-title" data-i18n="managerPortalTitle">Manager Oversight Dashboard</h2>
+              <span class="badge badge-primary" data-i18n="badgeSupervisor">Site Supervisor / Hospital Admin</span>
+            </div>
+            <p class="panel-desc" data-i18n="managerPortalDesc">
+              Real-time audit of recorded shifts, fatigue risks, overtime hours, and worker safety submissions.
+            </p>
+          </div>
+
+          <!-- Industry Filter -->
+          <div class="filter-group">
+            <label for="managerSectorFilter" class="filter-label" data-i18n="lblFilterIndustry">Filter Industry:</label>
+            <select id="managerSectorFilter" class="form-select">
+              <option value="ALL" data-i18n="optAllSectors">All Industries</option>
+              <option value="Construction" data-i18n="sectorConstruction">Construction</option>
+              <option value="Hospital" data-i18n="sectorHospital">Hospital Support</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Manager KPI Summary Cards -->
+        <div class="manager-kpi-grid" aria-label="Manager KPI Summary">
+          <div class="metric-card">
+            <div class="metric-icon bg-blue" aria-hidden="true">👥</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiTotalShifts">Recorded Shifts</div>
+              <div class="metric-value" id="kpiMgrTotalShifts">0</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon bg-green" aria-hidden="true">⏱️</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiTotalHours">Total Work Hours</div>
+              <div class="metric-value" id="kpiMgrTotalHours">0.0 hrs</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon bg-amber" aria-hidden="true">⚠️</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiFatigueAlerts">Fatigue Warnings</div>
+              <div class="metric-value" id="kpiMgrFatigueAlerts">0</div>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon bg-red" aria-hidden="true">🛡️</div>
+            <div>
+              <div class="metric-label" data-i18n="kpiPendingSafety">Pending Safety Reports</div>
+              <div class="metric-value" id="kpiMgrPendingSafety">0</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manager Content Panels -->
+        <div class="manager-grid">
+
+          <!-- Shift Audit Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon" aria-hidden="true">📋</span>
+                <h3 class="card-title" data-i18n="mgrShiftsTitle">Shift Records & Overtime Log</h3>
+              </div>
+              <div class="live-pulse-badge">
+                <span class="pulse-dot"></span>
+                <span data-i18n="badgeSessionSync">Session Synced</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="data-table" id="mgrShiftsTable">
+                  <thead>
+                    <tr>
+                      <th data-i18n="colShiftId">Shift ID</th>
+                      <th data-i18n="colWorkerRef">Worker Ref</th>
+                      <th data-i18n="colSector">Sector</th>
+                      <th data-i18n="colStartEnd">Start & End</th>
+                      <th data-i18n="colDuration">Total Hours</th>
+                      <th data-i18n="colOt">Overtime</th>
+                      <th data-i18n="colAlerts">Fatigue Alert</th>
+                      <th data-i18n="colAction">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mgrShiftsTableBody">
+                    <!-- Populated dynamically by script.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Safety Concern Review & Status Management -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon" aria-hidden="true">🚨</span>
+                <h3 class="card-title" data-i18n="mgrSafetyTitle">Workplace Safety Triage</h3>
+              </div>
+              <span class="badge badge-warning" id="mgrUnresolvedCountBadge">0 Needs Attention</span>
+            </div>
+            <div class="card-body">
+              <p class="section-lead" data-i18n="mgrSafetyDesc">
+                Review submitted worker concerns and update their progress. Anonymous submitters are strictly protected.
+              </p>
+
+              <div class="table-responsive">
+                <table class="data-table" id="mgrSafetyTable">
+                  <thead>
+                    <tr>
+                      <th data-i18n="colRefId">Ref #</th>
+                      <th data-i18n="colSector">Industry</th>
+                      <th data-i18n="colCategory">Category</th>
+                      <th data-i18n="colDescription">Description</th>
+                      <th data-i18n="colReporter">Reporter</th>
+                      <th data-i18n="colStatus">Status</th>
+                      <th data-i18n="colUpdateStatus">Update Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mgrSafetyTableBody">
+                    <!-- Populated dynamically by script.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /manager-grid -->
+
+        <!-- Reset / Seed Demo Data Utility Bar -->
+        <div class="demo-reset-bar">
+          <div class="demo-reset-info">
+            <span aria-hidden="true">🔄</span>
+            <span data-i18n="demoResetNotice">Need fresh demonstration records for your presentation?</span>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" id="btnResetDemoData">
+            <span data-i18n="btnReloadDemo">Reset to Default Demo Data</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SIGNATURE FEATURE: PROOF OF EVERY SHIFT (SHIFT RECEIPT MODAL) -->
+  <div class="modal-overlay hidden" id="receiptModal" role="dialog" aria-modal="true" aria-labelledby="receiptModalTitle">
+    <div class="modal-container receipt-modal">
+      <div class="modal-header">
+        <div class="modal-header-branding">
+          <span class="receipt-header-icon" aria-hidden="true">🧾</span>
+          <div>
+            <h3 class="modal-title" id="receiptModalTitle" data-i18n="receiptTitle">Proof of Every Shift — Shift Receipt</h3>
+            <span class="modal-subtitle" data-i18n="receiptSubtitle">WorkFair Verifiable Shift & Transparent Earnings Record</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close" id="btnCloseReceiptModal" aria-label="Close receipt modal">&times;</button>
+      </div>
+
+      <div class="modal-body printable-receipt" id="printableReceiptArea">
+        <!-- Watermark / Header -->
+        <div class="receipt-doc-header">
+          <div class="receipt-brand-row">
+            <div class="receipt-logo">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+              <span>WorkFair</span>
+            </div>
+            <div class="receipt-sdg-tag">UN SDG 8: Decent Work</div>
+          </div>
+
+          <div class="receipt-meta-grid">
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="lblReceiptId">Receipt Ref:</span>
+              <strong class="meta-val" id="recShiftId">WF-SH-2026-001</strong>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="lblDateIssued">Date Issued:</span>
+              <span class="meta-val" id="recDateIssued">2026-10-27</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="lblWorkerRef">Worker Ref:</span>
+              <span class="meta-val" id="recWorkerRef">Demo Worker (W-8491)</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-label" data-i18n="lblIndustrySector">Industry / Role:</span>
+              <span class="meta-val" id="recSector">Construction (Scaffolding)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shift Duration Timeline -->
+        <div class="receipt-section">
+          <h4 class="receipt-section-title" data-i18n="recShiftDetails">Shift Working Hours</h4>
+          <div class="timeline-box">
+            <div class="timeline-step">
+              <span class="timeline-label" data-i18n="lblStartTime">Check-in Time</span>
+              <strong class="timeline-time" id="recStartTime">08:00 AM</strong>
+              <span class="timeline-geo" id="recStartGeo">📍 Worksite Verified</span>
+            </div>
+            <div class="timeline-arrow" aria-hidden="true">➔</div>
+            <div class="timeline-step">
+              <span class="timeline-label" data-i18n="lblEndTime">Check-out Time</span>
+              <strong class="timeline-time" id="recEndTime">06:30 PM</strong>
+              <span class="timeline-geo" id="recEndGeo">📍 Normal Exit</span>
+            </div>
+          </div>
+
+          <div class="hours-summary-row">
+            <div class="hour-chip">
+              <span data-i18n="lblTotalRecordedHours">Total Recorded:</span>
+              <strong id="recTotalHours">10.5 hrs</strong>
+            </div>
+            <div class="hour-chip">
+              <span data-i18n="lblRegularHours">Regular:</span>
+              <strong id="recRegularHours">8.0 hrs</strong>
+            </div>
+            <div class="hour-chip highlight-chip">
+              <span data-i18n="lblOvertimeHours">Overtime:</span>
+              <strong id="recOvertimeHours">2.5 hrs</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transparent Pay Math Breakdown -->
+        <div class="receipt-section">
+          <h4 class="receipt-section-title" data-i18n="recPayMathTitle">Transparent Pay Calculation</h4>
+          <table class="receipt-pay-table">
+            <tbody>
+              <tr>
+                <td>
+                  <span data-i18n="recRegularPayDesc">Regular Hours Base Pay</span>
+                  <div class="calc-subtext" id="recRegularMathSub">8.0 hrs @ ₹150.00/hr</div>
+                </td>
+                <td class="text-right" id="recRegularPayAmount">₹1,200.00</td>
+              </tr>
+              <tr>
+                <td>
+                  <span data-i18n="recOvertimePayDesc">Overtime Shift Premium</span>
+                  <div class="calc-subtext" id="recOvertimeMathSub">2.5 hrs @ 1.5× (₹225.00/hr)</div>
+                </td>
+                <td class="text-right text-accent" id="recOvertimePayAmount">+ ₹562.50</td>
+              </tr>
+              <tr>
+                <td>
+                  <span data-i18n="recDeductionsDesc">Recorded Shift Deductions</span>
+                  <div class="calc-subtext" id="recDeductionsMathSub">Agreed deductions (None)</div>
+                </td>
+                <td class="text-right text-danger" id="recDeductionsAmount">- ₹0.00</td>
+              </tr>
+              <tr class="receipt-total-row">
+                <td>
+                  <strong data-i18n="recNetEstimatedPay">Estimated Total Earned for Shift</strong>
+                </td>
+                <td class="text-right">
+                  <strong class="receipt-total-amount" id="recNetTotalAmount">₹1,762.50</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Fatigue Status & Safety Report Links -->
+        <div class="receipt-section">
+          <h4 class="receipt-section-title" data-i18n="recSafetyFatigueTitle">Worker Safety & Fatigue Record</h4>
+          <div class="receipt-status-grid">
+            <div class="receipt-alert-box" id="recFatigueBox">
+              <span class="alert-icon" aria-hidden="true">⚠️</span>
+              <div>
+                <strong class="alert-label" id="recFatigueLabel" data-i18n="recFatigueWarningTitle">Fatigue Advisory Triggered</strong>
+                <p class="alert-text" id="recFatigueText" data-i18n="recFatigueWarningMsg">
+                  Shift duration (10.5 hrs) exceeded standard threshold. Worker rest is recommended.
+                </p>
+              </div>
+            </div>
+
+            <div class="receipt-alert-box" id="recSafetyBox">
+              <span class="alert-icon" aria-hidden="true">🛡️</span>
+              <div>
+                <strong class="alert-label" data-i18n="recSafetyConcernTitle">Associated Safety Reports</strong>
+                <p class="alert-text" id="recSafetyText" data-i18n="recNoSafetyFiled">
+                  No critical safety hazards logged during this shift window.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legal & Educational Disclaimer -->
+        <div class="receipt-footer-disclaimer">
+          <p data-i18n="recLegalDisclaimer">
+            <strong>Notice:</strong> This Shift Receipt is a transparent digital record and pay calculation estimate provided to support worker awareness under UN SDG 8. It does not replace an official payslip or legal tax certificate.
+          </p>
+          <div class="verification-hash">
+            <span>Verification Token:</span>
+            <code id="recHashToken">WF-VRF-9B82-4E11-2026</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" id="btnDismissReceipt" data-i18n="btnClose">Close</button>
+        <button type="button" class="btn btn-primary" id="btnPrintReceipt">
+          <span aria-hidden="true">🖨️</span>
+          <span data-i18n="btnPrintReceipt">Print Shift Receipt / Save PDF</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <strong>WorkFair</strong> — <span data-i18n="brandTagline">Fair Work, Safer Workers</span>
+      </div>
+      <div class="footer-sdg">
+        <span>Supporting UN Sustainable Development Goal 8</span> • <span>Target 8.8: Protect labour rights and promote safe working environments</span>
+      </div>
+      <div class="footer-meta">
+        <span data-i18n="footerDemoNotice">Zero-setup offline-ready demo. Double-click index.html to preview.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
